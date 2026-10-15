@@ -1,0 +1,178 @@
+{
+  "name": "AI Agent Outbound",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "restaurant-reservation",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7c9f2176-c346-4ac0-a394-f09f4735e063",
+      "name": "Webhook",
+      "webhookId": ""
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "customer_name": "={{ $json.body.customer_name }}",
+            "phone_number": "={{ $json.body.phone_number }}",
+            "date": "={{ $json.body.date }}",
+            "time": "={{ $json.body.time }}",
+            "guests": "={{ $json.body.guests }}",
+            "status": "confirmed"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "customer_name",
+              "displayName": "customer_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "phone_number",
+              "displayName": "phone_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "time",
+              "displayName": "time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "guests",
+              "displayName": "guests",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "3f4aa8ff-afb1-47c8-9aa5-9ce704b5d811",
+      "name": "Append row in sheet"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": true,\n  \"message\": \"Reservation has been successfully booked.\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "d9d39289-6a8b-41b2-b3e8-1ef0087127cc",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "nodeGroups": [],
+  "id": "",
+  "tags": []
+}
